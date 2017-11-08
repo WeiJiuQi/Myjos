@@ -166,7 +166,7 @@ debuginfo_eip(uintptr_t addr, struct Eipdebuginfo *info)
 		lline = lfile;
 		rline = rfile;
 	}
-	// Ignore stuff after the colon.
+	// Ignore stuffExercise 12. Modify your stack backtrace function to display, for each eip, the function name, source file name, and line number corresponding to that eip. after the colon.
 	info->eip_fn_namelen = strfind(info->eip_fn_name, ':') - info->eip_fn_name;
 
 
@@ -179,7 +179,10 @@ debuginfo_eip(uintptr_t addr, struct Eipdebuginfo *info)
 	//	Look at the STABS documentation and <inc/stab.h> to find
 	//	which one.
 	// Your code here.
-
+        stab_binsearch(stabs, &lline, &rline, N_SLINE, addr);
+        if (lline > rline)
+            return -1;
+        info->eip_line = stabs[lline].n_desc;
 
 	// Search backwards from the line number for the relevant filename
 	// stab.
